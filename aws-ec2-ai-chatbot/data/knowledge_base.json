@@ -1,0 +1,57 @@
+[
+  {
+    "id": "aws-001",
+    "title": "Amazon EC2",
+    "content": "Amazon Elastic Compute Cloud (EC2) provides resizable virtual servers, called instances, in the AWS cloud. You choose an Amazon Machine Image (AMI), an instance type sized for CPU and memory needs, and a Security Group that controls inbound and outbound network traffic. EC2 instances can run Linux or Windows and are commonly used to host web applications, APIs, and backend services such as this chatbot."
+  },
+  {
+    "id": "aws-002",
+    "title": "AWS IAM (Identity and Access Management)",
+    "content": "AWS Identity and Access Management (IAM) controls who can do what in an AWS account. IAM users, groups, and roles are granted permissions through policies written as JSON documents. Best practice is to follow the principle of least privilege: grant only the permissions required for a task. For applications running on EC2, an IAM role should be attached to the instance instead of storing AWS access keys in code or configuration files."
+  },
+  {
+    "id": "aws-003",
+    "title": "EC2 Security Groups",
+    "content": "A Security Group acts as a virtual firewall for an EC2 instance, controlling inbound and outbound traffic at the instance level. Rules specify a protocol, a port range, and a source or destination, such as a specific IP address or CIDR block. For SSH access, the source should be restricted to a known IP address rather than 0.0.0.0/0, which would allow connections from anywhere on the internet."
+  },
+  {
+    "id": "aws-004",
+    "title": "Amazon S3",
+    "content": "Amazon Simple Storage Service (S3) is an object storage service used to store and retrieve any amount of data, such as files, backups, static website assets, and datasets. Data is organized into buckets and objects, and access is controlled through bucket policies and IAM permissions. S3 is commonly used alongside compute services like EC2 or ECS for durable, scalable storage."
+  },
+  {
+    "id": "aws-005",
+    "title": "Amazon RDS",
+    "content": "Amazon Relational Database Service (RDS) is a managed database service that handles provisioning, patching, backups, and scaling for relational databases such as PostgreSQL, MySQL, and MariaDB. Using RDS instead of self-managing a database on EC2 reduces operational overhead and is a common next step when a backend project grows beyond an in-memory or file-based knowledge base."
+  },
+  {
+    "id": "aws-006",
+    "title": "Amazon ECS",
+    "content": "Amazon Elastic Container Service (ECS) is a container orchestration service for running Docker containers at scale without managing the underlying servers directly, when used with the Fargate launch type. ECS is a natural evolution from running a single Docker container on one EC2 instance toward a multi-container, auto-scaling production architecture."
+  },
+  {
+    "id": "backend-001",
+    "title": "FastAPI",
+    "content": "FastAPI is a modern Python web framework for building REST APIs. It uses Python type hints and Pydantic models to validate request and response data automatically, generates interactive OpenAPI documentation, and runs on an ASGI server such as Uvicorn. FastAPI's combination of performance and developer ergonomics makes it a popular choice for backend and AI-serving APIs."
+  },
+  {
+    "id": "backend-002",
+    "title": "Docker",
+    "content": "Docker packages an application and its dependencies into a container image that runs consistently across different environments, from a developer's laptop to an EC2 instance. A Dockerfile defines how the image is built, and Docker Compose can define and run multi-container applications using a single YAML configuration file."
+  },
+  {
+    "id": "backend-003",
+    "title": "Cloud Deployment",
+    "content": "Deploying a backend application to the cloud typically involves provisioning compute resources such as an EC2 instance, configuring networking and security controls, installing runtime dependencies, and running the application as a persistent service. Production deployments usually place a reverse proxy or load balancer in front of the application server and serve traffic over HTTPS rather than exposing the application server directly."
+  },
+  {
+    "id": "backend-004",
+    "title": "Environment Variables",
+    "content": "Environment variables allow an application's configuration, such as its name, environment, or file paths, to change between local development, testing, and production without modifying source code. Secrets and credentials should never be hard-coded; instead they are supplied through environment variables, a secrets manager, or, on AWS, through an IAM role attached to the compute resource."
+  },
+  {
+    "id": "backend-005",
+    "title": "REST APIs",
+    "content": "A REST API exposes resources and actions over HTTP using standard methods such as GET, POST, PUT, and DELETE, along with meaningful status codes. Request and response payloads are commonly encoded as JSON. Good REST API design validates input, returns clear error messages, and avoids leaking internal implementation details such as stack traces to clients."
+  }
+]
