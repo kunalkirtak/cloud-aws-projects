@@ -1,0 +1,12 @@
+services:
+  chatbot:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - APP_NAME=AWS EC2 AI Chatbot
+      - ENVIRONMENT=production
+      - KNOWLEDGE_BASE_PATH=data/knowledge_base.json
+      - MAX_RESULTS=3
+    volumes:
+      - ./data:/app/data:ro
