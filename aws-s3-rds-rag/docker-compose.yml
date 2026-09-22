@@ -1,0 +1,55 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: rag-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-raguser}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ragpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-ragdb}
+    ports:
+      - "127.0.0.1:5433:5432"   # bound to localhost only
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+
+  api:
+    build: .
+    container_name: rag-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg://${POSTGRES_USER:-raguser}:${POSTGRES_PASSWORD:-ragpassword}@postgres:5432/${POSTGRES_DB:-ragdb}
+      - ENVIRONMENT=docker
+      - STORAGE_BACKEND=${STORAGE_BACKEND:-local}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME:-}
+      - S3_PREFIX=${S3_PREFIX:-documents/}
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-sentence-transformers}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-sentence-transformers/all-MiniLM-L6-v2}
+      - EMBEDDING_DIM=${EMBEDDING_DIM:-384}
+      - CHUNK_SIZE=${CHUNK_SIZE:-800}
+      - CHUNK_OVERLAP=${CHUNK_OVERLAP:-100}
+      - DEFAULT_TOP_K=${DEFAULT_TOP_K:-5}
+      - GENERATION_PROVIDER=${GENERATION_PROVIDER:-extractive}
+      # Pass-through only when set on the host (S3 mode from a laptop). On AWS use an IAM role instead.
+      - AWS_PROFILE
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_SESSION_TOKEN
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./data/documents:/app/data/documents
+      - hf_cache:/app/.cache/huggingface
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  hf_cache:
