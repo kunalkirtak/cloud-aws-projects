@@ -1,0 +1,11 @@
+Amazon S3 Overview
+
+Amazon S3 (Simple Storage Service) is object storage. Files are stored as objects inside buckets, and every object is addressed by a key. S3 is designed for durability and scalability and is commonly used for documents, backups, logs and datasets.
+
+Buckets should be private by default. Enable Block Public Access and grant access through IAM policies attached to roles instead of using public buckets.
+
+S3 supports server-side encryption, so objects are encrypted at rest. Versioning can keep previous versions of an object.
+
+Least privilege means the application role only receives the S3 actions it needs, such as s3:GetObject and s3:PutObject on a single bucket prefix.
+
+S3 storage, requests and data transfer can incur charges, so review current pricing and delete unused objects.
